@@ -1,4 +1,5 @@
 {
+  "type": "module"  ,
   "name": "application-status-bot",
   "version": "1.0.0",
   "description": "",
@@ -7,5 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "alexandre alves",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^22.12.1"
+  }
+
 }
