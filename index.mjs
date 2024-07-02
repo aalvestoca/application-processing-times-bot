@@ -1,52 +1,9 @@
 import puppeteer from 'puppeteer';
-// Or import puppeteer from 'puppeteer-core';
+import { getApplicationTypes } from './applicationTypes.mjs';
+import { getHumanitarianCasesTime } from './ProcessingTimes/humanitarianCases.mjs';
 
-// Launch the browser and open a new blank page
-const browser = await puppeteer.launch({
-    //headless: false,
-    //slowMo: 250, // slow down by 250ms
-});
-const page = await browser.newPage();
-
-// Navigate the page to a URL.
-await page.goto('https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html');
-
-// Set screen size.
-//await page.setViewport({width: 1080, height: 1024});
-
-// Type into search box.
-// const tipusArray = await page.evaluate(async () => {
-//     function delay(time) {
-//         return new Promise(function (resolve) {
-//             setTimeout(resolve, time)
-//         });
-//     }
-
-//     await delay(3000)
-
-//     const a = Array.from(document.getElementById('wb-auto-23').options)
-//     return a.length ? a.map(element => element.value) : ["here"]
-// });
-
-//console.log(tipusArray)
-// [
-//   '',
-//   'Temporary residence (visiting, studying, working)',
-//   'Economic immigration',
-//   'Family sponsorship',
-//   'Refugees',
-//   'Humanitarian and Compassionate cases',
-//   'Passport',
-//   'Citizenship',
-//   'Permanent resident cards',
-//   'Replacing or amending documents, verifying status'
-// ]
-
-delay(4000)
-
-await page.select('#wb-auto-23', 'Humanitarian and Compassionate cases');
-
-await page.click('.btn-submit')
+const URL = 'https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html'
+const OPEN_BROWSER = 0
 
 function delay(time) {
     return new Promise(function (resolve) {
@@ -54,10 +11,21 @@ function delay(time) {
     });
 }
 
-delay(4000)
+const browser = await puppeteer.launch({
+    headless: !OPEN_BROWSER,
+});
+const page = await browser.newPage();
+await page.goto(URL);
+await page.waitForSelector('select')
 
-const text = await page.$("#result span.wb-data-json-inited", span => span.innerText);
+// const types = await getApplicationTypes(page, 'select')
+// console.log(types)
 
-console.log("-> " + text)
+await page.select( "select", 'Humanitarian and Compassionate cases');
+await delay(2000)
 
-await browser.close()
+const time = await getHumanitarianCasesTime(page, delay)
+console.log(time)
+
+if (!OPEN_BROWSER)
+    await browser.close()
