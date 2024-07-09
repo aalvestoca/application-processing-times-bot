@@ -27,5 +27,7 @@ await delay(2000)
 const time = await getHumanitarianCasesTime(page, delay)
 console.log(time)
 
+await delay(1000)
+
 if (!OPEN_BROWSER)
     await browser.close()
