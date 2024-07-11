@@ -1,5 +1,5 @@
 {
-  "type": "module"  ,
+  "type": "module",
   "name": "application-status-bot",
   "version": "1.0.0",
   "description": "",
@@ -10,7 +10,6 @@
   "author": "alexandre alves",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^22.12.1"
+    "puppeteer": "^22.13.0"
   }
-
 }

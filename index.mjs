@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 import { getApplicationTypes } from './applicationTypes.mjs';
 import { getHumanitarianCasesTime } from './ProcessingTimes/humanitarianCases.mjs';
+import { getRefugeesTime } from './ProcessingTimes/refugees.mjs';
 
 const URL = 'https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html'
 const OPEN_BROWSER = 0
@@ -21,11 +22,11 @@ await page.waitForSelector('select')
 // const types = await getApplicationTypes(page, 'select')
 // console.log(types)
 
-await page.select( "select", 'Humanitarian and Compassionate cases');
-await delay(2000)
+const arr = []
+arr.push(await getHumanitarianCasesTime(page, delay))
+arr.push(await getRefugeesTime(page, delay))
 
-const time = await getHumanitarianCasesTime(page, delay)
-console.log(time)
+console.log(arr)
 
 await delay(1000)
 
